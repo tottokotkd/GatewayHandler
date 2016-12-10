@@ -1,6 +1,3 @@
-group 'com.tottokotkd'
-version '1.0'
-
 buildscript {
     ext.kotlin_version = '1.0.3'
 
@@ -12,7 +9,17 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+
+group project.groupId
+version project.version
+
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
 
 repositories {
     mavenCentral()
@@ -28,17 +35,33 @@ dependencies {
 
 }
 
-apply plugin: 'maven'
 
-uploadArchives {
-    def repo = new File(rootDir, "doc/maven")
-    repositories {
-        mavenDeployer {
-            repository url: "file://${repo.absolutePath}"
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId project.groupId
+            artifactId project.artifactId
+            version project.version
         }
     }
 }
 
+
+bintray {
+    user = project.BintrayUser
+    key = project.BintrayKey
+    publications = ['MyPublication']
+    pkg {
+        repo = 'maven'
+        name = 'GatewayHandler'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/tottokotkd/GatewayHandler.git'
+        version {
+            name = project.version
+        }
+    }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
