@@ -2,6 +2,7 @@
 ### Gradle template
 .gradle
 build/
+repository/
 
 # Ignore Gradle GUI config
 gradle-app.setting
