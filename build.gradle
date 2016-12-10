@@ -1,0 +1,45 @@
+group 'com.tottokotkd'
+version '1.0'
+
+buildscript {
+    ext.kotlin_version = '1.0.3'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+    compile group: 'com.squareup.moshi', name: 'moshi', version: '1.3.1'
+    compile (
+            'com.amazonaws:aws-lambda-java-core:1.1.0',
+            'com.amazonaws:aws-lambda-java-events:1.1.0'
+    )
+
+}
+
+apply plugin: 'maven'
+
+uploadArchives {
+    def repo = new File(rootDir, "repository/maven")
+    repositories {
+        mavenDeployer {
+            repository url: "file://${repo.absolutePath}"
+        }
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}
