@@ -59,6 +59,12 @@ bintray {
         vcsUrl = 'https://github.com/tottokotkd/GatewayHandler.git'
         version {
             name = project.version
+            vcsTag = project.version
+            desc = "${project.artifactId} ${project.version}"
+            gpg {
+                sign = true
+                passphrase = project.BintrayGpgKey
+            }
         }
     }
 }
