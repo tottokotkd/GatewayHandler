@@ -21,17 +21,41 @@ dependencies {
 ```kotlin
 package hello
 
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.dynamodbv2.document.DynamoDB
+import com.amazonaws.services.dynamodbv2.document.Item
 import com.amazonaws.services.lambda.runtime.Context
-import com.tottokotkd.aws.gateway.json.*
+import com.tottokotkd.aws.gateway.core.*
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.properties.Delegates
 
-data class Request(var key1: String? = null, var key2: String? = null, var key3: String? = null)
-data class Result(var message: String? = null, var request: Request? = null)
+class SaveRequest {
+    lateinit var user: String
+    lateinit var url: String
+    var rate: Int by Delegates.notNull()
+    lateinit var timestamp: String
+}
 
-class HandlerGateway: JsonHandler<Request, Result> {
-    override fun handleRequest(input: Request, context: Context): JsonResponse<Result> {
-        val body = Result("now Kotlin handles request! key1=${input.key1}, key2=${input.key2}, key3=${input.key3}", input);
-        return JsonResponse(body)
+data class Result(val body: Any, val headers: Map<String, String>, val statusCode: Int)
+
+class SaveHandler: DataHandler<SaveRequest, Any> {
+    override fun handleRequest(input: SaveRequest, context: Context): ResponseData<Any> {
+
+        val timestamp = try {
+            ZonedDateTime.parse(input.timestamp, DateTimeFormatter.ISO_DATE_TIME)  
+        } catch (e: Exception) {
+            return ResponseData(mapOf("status" to "error", "desc" to "date time parsing failed."), StatusCode.BadRequest)
+        }
+
+        val dynamoDB = DynamoDB(Regions.US_EAST_1)
+        val t = dynamoDB.getTable("pages")
+        val item = Item.fromMap(mapOf("user" to input.user, "url" to input.url, "rate" to input.rate, "epoch" to timestamp.toEpochSecond(), "timezone" to timestamp.offset.totalSeconds))
+        val result = t.putItem(item)
+
+        return ResponseData(mapOf("status" to "success", "input" to input))
     }
+
 }
 ```
 
