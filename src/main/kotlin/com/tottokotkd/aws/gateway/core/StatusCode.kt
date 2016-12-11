@@ -68,5 +68,3 @@ enum class StatusCode(val value: Int) {
     BandwidthLimitExceeded(509),
     NotExtended(510)
 }
-
-

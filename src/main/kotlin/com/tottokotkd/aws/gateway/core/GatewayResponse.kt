@@ -9,6 +9,3 @@ interface GatewayResponse {
     val headers: Map<String, String>
     val statusCode: Int
 }
-
-
-
