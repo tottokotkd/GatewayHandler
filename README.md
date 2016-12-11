@@ -37,8 +37,6 @@ class SaveRequest {
     lateinit var timestamp: String
 }
 
-data class Result(val body: Any, val headers: Map<String, String>, val statusCode: Int)
-
 class SaveHandler: DataHandler<SaveRequest, Any> {
     override fun handleRequest(input: SaveRequest, context: Context): ResponseData<Any> {
 
