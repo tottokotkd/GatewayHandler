@@ -7,7 +7,7 @@ minimum Kotlin Interfaces and data classes to create AWS Lambda Handler, which r
 ```gradle
 repositories {
     maven {
-        url "https://dl.bintray.com/tottokotkd/maven"
+        jcenter()
     }
 }
 

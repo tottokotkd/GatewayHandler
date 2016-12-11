@@ -5,10 +5,7 @@ package com.tottokotkd.aws.gateway.core
  */
 
 interface GatewayResponse {
-    val body: String?
+    val body: Any?
     val headers: Map<String, String>
     val statusCode: Int
 }
-
-
-

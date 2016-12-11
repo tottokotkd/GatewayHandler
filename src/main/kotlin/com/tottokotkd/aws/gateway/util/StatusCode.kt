@@ -1,4 +1,4 @@
-package com.tottokotkd.aws.gateway.core
+package com.tottokotkd.aws.gateway.util
 
 /**
  * Created by tottokotkd on 2016/12/08.
@@ -68,5 +68,3 @@ enum class StatusCode(val value: Int) {
     BandwidthLimitExceeded(509),
     NotExtended(510)
 }
-
-
