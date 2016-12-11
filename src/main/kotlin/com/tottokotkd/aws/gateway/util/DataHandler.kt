@@ -1,4 +1,6 @@
-package com.tottokotkd.aws.gateway.core
+package com.tottokotkd.aws.gateway.util
+
+import com.tottokotkd.aws.gateway.core.GatewayRequestHandler
 
 /**
  * Created by tottokotkd on 2016/12/11.
